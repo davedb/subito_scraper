@@ -15,4 +15,8 @@ class SubitoSingleItemList(scrapy.Item):
     category = scrapy.Field()
     link = scrapy.Field()
     date_scraped = scrapy.Field()
-    
+    price = scrapy.Field()
+    date_published = scrapy.Field()
+    location = scrapy.Field()
+    year = scrapy.Field()
+    mileage = scrapy.Field()

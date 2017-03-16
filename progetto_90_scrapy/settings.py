@@ -67,6 +67,8 @@ ROBOTSTXT_OBEY = True
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    #'progetto_90_scrapy.pipelines.SomePipeline': 300,
+   'progetto_90_scrapy.pipelines.CheckElementIsDuplicate' : 300,
+   'progetto_90_scrapy.pipelines.CheckItemValuesPipeline' : 301,
    'progetto_90_scrapy.pipelines.MongoPipeline' : 400
 }
 

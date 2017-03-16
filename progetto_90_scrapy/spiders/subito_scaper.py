@@ -19,15 +19,31 @@ class SubitoScaperSpider(scrapy.Spider):
     #start_urls = ['http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+ninet']
 
     def parse(self, response):
-        desc_list = response.css('div.item_description')
-        logging.debug('Elementi nel listato: {0}'.format(len(desc_list), '>20'))
+        listing = response.css('ul.items_listing')
+        logging.debug('Elementi nel listato: {0}'.format(len(listing), '>20'))
         current_item = SubitoSingleItemList()
-        for desc in desc_list:
-            current_item['category'] = desc.css('span.item_category::text').extract_first()
-            current_item['title'] = desc.css('h2>a::attr(title)').extract_first()
-            current_item['name'] = desc.css('h2>a::attr(name)').extract_first()
-            current_item['link'] = desc.css('h2>a::attr(href)').extract_first()
+        for el in listing.css('li'):
+            current_item['name'] = el.css('article::attr(data-id)').extract_first()
+            item_desc = el.css('div.item_description')
+            current_item['category'] = item_desc.css('span.item_category::text').extract_first()
+            current_item['title'] = item_desc.css('h2>a::attr(title)').extract_first()
+            current_item['link'] = item_desc.css('h2>a::attr(href)').extract_first()
+            current_item['price'] = item_desc.css('span.item_price::text').extract_first()
             current_item['date_scraped'] = self.current_date
+            item_info_motor = item_desc.css('span.item_info_motori')
+            current_item['date_published'] = item_info_motor.css('time::attr(datetime)').extract_first()
+            current_item['location'] = item_info_motor.css('span.item_location').css('em.item_city::text').extract_first()
+            current_item['year'] = item_desc.css('span.item_motori').css('div.item_regdate>p::text')[1].extract()
+
+            mileage = ['no info']
+            try:
+                mileage = [item_info_motor.css('div.item_mileage>p::text')[1].extract()]
+                mileage.append(item_info_motor.css('div.item_mileage>p::text')[2].extract())
+            except IndexError as e:
+                pass
+
+            current_item['mileage'] = ', '.join(mileage) if len(mileage) > 1 else mileage[0]
+
             yield current_item
             # yield {
             #     'category': desc.css('span.item_category::text').extract_first(),
