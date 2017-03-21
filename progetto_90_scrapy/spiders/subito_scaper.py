@@ -13,7 +13,10 @@ class SubitoScaperSpider(scrapy.Spider):
     current_date = (datetime.datetime.today()).replace(hour=0, minute=0, second=0, microsecond=0)
 
     def start_requests(self):
-        urls = ['http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+ninet']
+        urls = [
+            'http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+ninet',
+            'http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+f800gs'
+            ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
     #start_urls = ['http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+ninet']
@@ -22,7 +25,9 @@ class SubitoScaperSpider(scrapy.Spider):
         listing = response.css('ul.items_listing')
         logging.debug('Elementi nel listato: {0}'.format(len(listing), '>20'))
         current_item = SubitoSingleItemList()
+        query = response.css('#searchtext::attr(value)').extract_first()
         for el in listing.css('li'):
+            current_item['query'] = query
             current_item['name'] = el.css('article::attr(data-id)').extract_first()
             item_desc = el.css('div.item_description')
             current_item['category'] = item_desc.css('span.item_category::text').extract_first()
@@ -33,12 +38,14 @@ class SubitoScaperSpider(scrapy.Spider):
             item_info_motor = item_desc.css('span.item_info_motori')
             current_item['date_published'] = item_info_motor.css('time::attr(datetime)').extract_first()
             current_item['location'] = item_info_motor.css('span.item_location').css('em.item_city::text').extract_first()
-            current_item['year'] = item_desc.css('span.item_motori').css('div.item_regdate>p::text')[1].extract()
+
+            item_motor = item_desc.css('span.item_motori')
+            current_item['year'] = item_motor.css('div.item_regdate>p::text')[1].extract()
 
             mileage = ['no info']
             try:
-                mileage = [item_info_motor.css('div.item_mileage>p::text')[1].extract()]
-                mileage.append(item_info_motor.css('div.item_mileage>p::text')[2].extract())
+                mileage = [item_motor.css('div.item_mileage>p::text')[1].extract()]
+                mileage.append(item_motor.css('div.item_mileage>p::text')[2].extract())
             except IndexError as e:
                 pass
 

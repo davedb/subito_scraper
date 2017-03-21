@@ -5,15 +5,16 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
+import pymongo
+from datetime import datetime
+from scrapy.exceptions import DropItem
+import re
+from difflib import SequenceMatcher
+import Levenshtein
 
 class Progetto90ScrapyPipeline(object):
     def process_item(self, item, spider):
         return item
-
-
-import pymongo
-from datetime import datetime
-from scrapy.exceptions import DropItem
 
 class CheckElementIsDuplicate(object):
 
@@ -37,6 +38,34 @@ class CheckItemValuesPipeline(object):
     #     )
 
     def process_item(self, item, spider):
+
+        MINIMUM_PRICE_VALUE = 1
+
+        # check title matches query
+        if item['title']:
+            # query = item['query']
+            # regex_digit = r"\d+"
+            # digit_in_query = re.finditer(query, regex_digit, re.IGNORECASE)
+            # if digit_in_query:
+            #     digit_in_query
+            #
+            #
+            # query_list = item['query'].split(' ')
+
+            # for q in query_list:
+            #     current_query = q.lower()
+
+            t = item['title'][:len(item['query'])]
+
+            r = SequenceMatcher(None, item['title'], item['query']).ratio()
+            rL =  SequenceMatcher(None, t, item['query']).ratio()
+            if rL < .25:
+                raise DropItem("Item is not what you're looking for {0}".format(item))
+            #rL = Levenshtein.ratio(item['title'], item['query'])
+                # print('Ratio between title ({0}) and query ({1}): {2}'.format(item['title'], item['query'], r) )
+                # print('Ratio between t ({0}) and query ({1}): {2}'.format(t, item['query'], rL) )
+        else:
+            raise DropItem("Missing title in {0}".format(item))
         # check category
         if item['category']:
             if item['category'] != 'Moto e Scooter':
@@ -47,7 +76,7 @@ class CheckItemValuesPipeline(object):
         if item['price']:
             # let's transform price written: 6.999 € in 6999
             item['price'] = item['price'].split(' ')[0].replace('.', '')
-            if float(item['price']) < 5000:
+            if float(item['price']) < MINIMUM_PRICE_VALUE:
                 raise DropItem("Price too low in {0}".format(item))
         else:
             raise DropItem("Missing price in {0}".format(item))
@@ -102,8 +131,8 @@ class MongoPipeline(object):
         cursor = self.db[self.collection_name].find({'name':dict(item)['name']})
 
         if cursor.count() == 0:
-            print(dict(item)['name'])
-            print('New Doc! : {0}'.format(cursor.count()))
+            #print(dict(item)['name'])
+            #print('New Doc! : {0}'.format(cursor.count()))
             self.db[self.collection_name].insert(dict(item))
         else:
             # update date_scraped
@@ -111,9 +140,9 @@ class MongoPipeline(object):
             self.db[self.collection_name].update_one(
                 {'name': dict(item)['name']},
                 { '$set':{
+                    'query': dict(item)['query'],
                     'price': dict(item)['price'],
                     'date_scraped': dict(item)['date_scraped'],
-                    'date_published': dict(item)['date_published'],
                     'location': dict(item)['location'],
                     'year': dict(item)['year'],
                     'mileage': dict(item)['mileage']

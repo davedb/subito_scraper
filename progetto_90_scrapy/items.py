@@ -10,6 +10,7 @@ import scrapy
 
 class SubitoSingleItemList(scrapy.Item):
     # define the fields for your item here like:
+    query = scrapy.Field()
     name = scrapy.Field()
     title = scrapy.Field()
     category = scrapy.Field()
