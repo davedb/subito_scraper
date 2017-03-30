@@ -21,7 +21,8 @@ server.route({
     handler: function(request, reply) {
         var scrappy = new scraper();
         scrappy.run(function(message){
-            reply(message);
+            var objJson = JSON.parse(message);
+            reply(objJson);
         });
     }
 }); 
