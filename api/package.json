@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter progress",
-    "start" : "node index.js --port 7531"
+    "start": "node index.js --port 7531"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "hapi": "^16.1.0",
-    "pytalk": "^1.0.5"
+    "python-shell": "^0.4.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
