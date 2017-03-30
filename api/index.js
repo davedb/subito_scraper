@@ -24,7 +24,7 @@ server.route({
             reply(message);
         });
     }
-});
+}); 
 
 // Start server
 server.start((err) => {
