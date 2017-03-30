@@ -11,7 +11,7 @@ server.route({
     method: 'GET',
     path: '/',
     handler: function(request, reply) {
-        reply('Echo API!');
+        reply('Test API!');
     }
 });
 
