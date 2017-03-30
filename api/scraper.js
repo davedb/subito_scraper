@@ -1,21 +1,17 @@
+var PythonShell = require('python-shell');
+
 function scraper_module() {
-    const pytalk = require('pytalk');
-    let worker = pytalk.worker('test-scraper.py');
-
-    let subito = worker.method('subito');
-
     var done = false;
 
-    this.run = function(callback) {
-        subito((err, res) => {
-            if (!done) {
-                callback(res);
-                done = true;
-            }
+    this.run = function (callback) {
+        
+        var subitoScraper = new PythonShell('test-scraper.py');
+
+        var response = "test response";
+        subitoScraper.on('message', function (message) {
+            callback(message);
         });
     };
-
-
 }
 
 module.exports = scraper_module;

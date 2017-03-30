@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter progress"
+    "test": "mocha --reporter progress",
+    "start" : "node index.js --port 7531"
   },
   "author": "",
   "license": "ISC",

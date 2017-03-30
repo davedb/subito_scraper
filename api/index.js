@@ -4,9 +4,7 @@ const Hapi = require('hapi');
 const scraper = require('./scraper');
 const server = new Hapi.Server();
 
-server.connection({ port: 8080, host: 'localhost' });
-
-
+server.connection({ port: 8080 , host: 'localhost' });
 
 // routes
 server.route({
@@ -17,22 +15,19 @@ server.route({
     }
 });
 
-
 server.route({
     method: 'GET',
     path: '/search',
     handler: function(request, reply) {
         var scrappy = new scraper();
-
-       scrappy.run((res) => {
-            reply(res);
-       });
+        scrappy.run(function(message){
+            reply(message);
+        });
     }
 });
 
 // Start server
 server.start((err) => {
-
     if (err) {
         throw err;
     }
