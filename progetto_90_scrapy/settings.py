@@ -18,6 +18,7 @@ NEWSPIDER_MODULE = 'progetto_90_scrapy.spiders'
 
 MONGO_URI = 'localhost'
 MONGO_DATABASE = 'scrapy_test'
+MONGO_SECRET = './grant/mongo_secret.txt'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'progetto_90_scrapy (+http://www.yourdomain.com)'
 

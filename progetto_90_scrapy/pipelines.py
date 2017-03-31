@@ -101,22 +101,29 @@ class MongoPipeline(object):
 
     collection_name = 'scrapy_items'
 
-    def __init__(self, mongo_uri, mongo_db):
+    def __init__(self, mongo_uri, mongo_db, mongo_secret):
         self.mongo_uri = mongo_uri
         self.mongo_db = mongo_db
+        f = open(mongo_secret, 'r')
+        ulist = f.read().split(',')
+        self.mongo_u = ulist[0].strip()
+        self.mongo_p = ulist[1].strip()
+        f.close()
 
     @classmethod
     def from_crawler(cls, crawler):
         return cls(
             mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
+            mongo_db=crawler.settings.get('MONGO_DATABASE', 'items'),
+            mongo_secret=crawler.settings.get('MONGO_SECRET')
         )
 
     def open_spider(self, spider):
+
         #self.client = pymongo.MongoClient(self.mongo_uri)
         self.client = pymongo.MongoClient(self.mongo_uri, 27017)
         try:
-            self.client['admin'].authenticate('davide', 'laCucc4r4cia', mechanism='SCRAM-SHA-1')
+            self.client['admin'].authenticate(self.mongo_u, self.mongo_p, mechanism='SCRAM-SHA-1')
             self.db = self.client[self.mongo_db]
         except Exception as e:
             print('mongo db auth error %s' % e)
