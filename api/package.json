@@ -1,0 +1,20 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter progress",
+    "start": "node index.js --port 7531"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "^16.1.0",
+    "python-shell": "^0.4.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
