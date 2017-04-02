@@ -1,15 +1,15 @@
-var PythonShell = require('python-shell');
+const PythonShell = require('python-shell');
+
 
 function scraper_module() {
     var done = false;
 
-    this.run = function (callback) {
-        
-        var subitoScraper = new PythonShell('test-scraper.py');
+    this.run = function (scraper, callback) {
 
-        var response = "test response";
-        subitoScraper.on('message', function (message) {
-            callback(message);
+        var ret = scraper.on('message', function (message) {
+            if (!done) {
+                callback(message);
+            }
         });
     };
 }
