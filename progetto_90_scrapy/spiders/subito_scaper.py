@@ -42,14 +42,15 @@ class SubitoScaperSpider(scrapy.Spider):
             item_motor = item_desc.css('span.item_motori')
             current_item['year'] = item_motor.css('div.item_regdate>p::text')[1].extract()
 
-            mileage = ['no info']
+            mileage = None
             try:
-                mileage = [item_motor.css('div.item_mileage>p::text')[1].extract()]
-                mileage.append(item_motor.css('div.item_mileage>p::text')[2].extract())
+                #'15.000' -> 15000
+                mileage = [int(item_motor.css('div.item_mileage>p::text')[1].extract().replace('.', ''))]
+                mileage.append(int(item_motor.css('div.item_mileage>p::text')[2].extract().replace('.', '')))
             except IndexError as e:
                 pass
 
-            current_item['mileage'] = ', '.join(mileage) if len(mileage) > 1 else mileage[0]
+            current_item['mileage'] = mileage#', '.join(mileage) if len(mileage) > 1 else mileage[0]
 
             yield current_item
             # yield {

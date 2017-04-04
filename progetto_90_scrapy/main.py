@@ -14,9 +14,11 @@ class Main:
         process = CrawlerProcess(get_project_settings())
 
         # 'subito' is the name of one of the spiders of the project.
-        process.crawl('subito')
+        items = process.crawl('subito')
         process.start() # the script will block here until the crawling is finished
 
+        # print(type(items))
+        # print(items)
         # run monitoring informations
         # self.monitor_routine()
 

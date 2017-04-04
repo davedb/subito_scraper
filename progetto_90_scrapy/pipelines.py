@@ -97,6 +97,12 @@ class CheckItemValuesPipeline(object):
 
         return item
 
+class PrintItemsToJson(object):
+
+    def process_item(self, item, spider):
+        print(dict(item))
+        return item
+
 class MongoPipeline(object):
 
     collection_name = 'scrapy_items'

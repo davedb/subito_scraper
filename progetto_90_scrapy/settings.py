@@ -10,6 +10,8 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
 LOG_LEVEL = 'INFO'
+LOG_ENABLED = False
+
 
 BOT_NAME = 'progetto_90_scrapy'
 
@@ -50,9 +52,9 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    'progetto_90_scrapy.middlewares.Progetto90ScrapySpiderMiddleware': 543,
-#}
+# }
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
@@ -72,6 +74,7 @@ ITEM_PIPELINES = {
    #'progetto_90_scrapy.pipelines.SomePipeline': 300,
    'progetto_90_scrapy.pipelines.CheckElementIsDuplicate' : 300,
    'progetto_90_scrapy.pipelines.CheckItemValuesPipeline' : 301,
+   'progetto_90_scrapy.pipelines.PrintItemsToJson' : 302,
    'progetto_90_scrapy.pipelines.MongoPipeline' : 400
 }
 
