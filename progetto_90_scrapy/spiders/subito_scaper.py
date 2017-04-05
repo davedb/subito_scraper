@@ -15,7 +15,8 @@ class SubitoScaperSpider(scrapy.Spider):
     def start_requests(self):
         urls = [
             'http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+ninet',
-            'http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+f800gs'
+            #'http://www.subito.it/annunci-italia/vendita/usato/?q=bmw+ninet',
+            #'http://www.subito.it/annunci-italia/vendita/usato/?q=bmw+f800gs'
             ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -44,9 +45,13 @@ class SubitoScaperSpider(scrapy.Spider):
 
             mileage = None
             try:
+                # km 0
                 #'15.000' -> 15000
-                mileage = [int(item_motor.css('div.item_mileage>p::text')[1].extract().replace('.', ''))]
-                mileage.append(int(item_motor.css('div.item_mileage>p::text')[2].extract().replace('.', '')))
+                try:
+                    mileage = [int(item_motor.css('div.item_mileage>p::text')[1].extract().replace('.', ''))]
+                    mileage.append(int(item_motor.css('div.item_mileage>p::text')[2].extract().replace('.', '')))
+                except ValueError as e:
+                    mileage = [0]
             except IndexError as e:
                 pass
 
