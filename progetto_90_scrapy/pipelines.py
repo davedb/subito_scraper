@@ -124,7 +124,7 @@ class PrintItemsToJson(object):
 
 class MongoPipeline(object):
 
-    collection_name = 'scrapy_items'
+    collection_name = 'scraped_items'
 
     def __init__(self, mongo_uri, mongo_db, mongo_secret):
         self.mongo_uri = mongo_uri
