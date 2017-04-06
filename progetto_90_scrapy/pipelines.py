@@ -106,7 +106,7 @@ class CheckItemValuesPipeline(object):
             if match_mileage != None:
                 val_1 = match_mileage.groups()[0] + match_mileage.groups()[1] if match_mileage.groups()[1] else match_mileage.groups()[0]
                 val_2 = match_mileage.groups()[2] + match_mileage.groups()[3] if match_mileage.groups()[3] else match_mileage.groups()[2]
-                print(val_1, val_2)
+                
                 mileage_arr = [int(val_1), int(val_2)]
                 item['mileage'] = mileage_arr
 
@@ -148,8 +148,8 @@ class MongoPipeline(object):
         #self.client = pymongo.MongoClient(self.mongo_uri)
         self.client = pymongo.MongoClient(self.mongo_uri, 27017)
         try:
-            self.client['admin'].authenticate(self.mongo_u, self.mongo_p, mechanism='SCRAM-SHA-1')
             self.db = self.client[self.mongo_db]
+            self.db.authenticate(self.mongo_u, self.mongo_p, mechanism='SCRAM-SHA-1')
         except Exception as e:
             print('mongo db auth error %s' % e)
             #return self
