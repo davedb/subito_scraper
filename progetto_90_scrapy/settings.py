@@ -9,7 +9,7 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'DEBUG'
 LOG_ENABLED = False
 
 
@@ -75,7 +75,7 @@ ITEM_PIPELINES = {
    'progetto_90_scrapy.pipelines.CheckElementIsDuplicate' : 300,
    'progetto_90_scrapy.pipelines.CheckItemValuesPipeline' : 301,
    'progetto_90_scrapy.pipelines.PrintItemsToJson' : 302,
-   #'progetto_90_scrapy.pipelines.MongoPipeline' : 400
+   'progetto_90_scrapy.pipelines.MongoPipeline' : 400
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -30,6 +30,7 @@ class CheckElementIsDuplicate(object):
 
 class CheckItemValuesPipeline(object):
 
+    regex_mileage = r"(\d+)\.?(\d+)?\skm\s?-\s(\d+)\.?(\d+)?"
     # @classmethod
     # def from_crawler(cls, crawler):
     #     return cls(
@@ -66,12 +67,15 @@ class CheckItemValuesPipeline(object):
                 # print('Ratio between t ({0}) and query ({1}): {2}'.format(t, item['query'], rL) )
         else:
             raise DropItem("Missing title in {0}".format(item))
+
         # check category
         if item['category']:
             if item['category'] != 'Moto e Scooter':
-                raise DropItem("Item category is not Moto e Scooter".format(item))
+                pass
+                #raise DropItem("Item category is not Moto e Scooter".format(item))
         else:
-            raise DropItem("Missing category in {0}".format(item))
+            pass
+            #raise DropItem("Missing category in {0}".format(item))
         #check and polish price
         if item['price']:
             # let's transform price written: 6.999 € in 6999
@@ -94,6 +98,21 @@ class CheckItemValuesPipeline(object):
             item['location'] = item['location'].replace('(', '').replace(')','')
         else:
             raise DropItem("Missing location in {0}".format(item))
+
+        # check and polish mileage
+        if item['mileage']:
+            mileage = item['mileage']
+            match_mileage = re.search(self.regex_mileage, mileage)
+            if match_mileage != None:
+                val_1 = match_mileage.groups()[0] + match_mileage.groups()[1] if match_mileage.groups()[1] else match_mileage.groups()[0]
+                val_2 = match_mileage.groups()[2] + match_mileage.groups()[3] if match_mileage.groups()[3] else match_mileage.groups()[2]
+                print(val_1, val_2)
+                mileage_arr = [int(val_1), int(val_2)]
+                item['mileage'] = mileage_arr
+
+        # check and polish year
+        if item['year']:
+            item['year'] = int(item['year'])
 
         return item
 
