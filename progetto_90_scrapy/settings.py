@@ -9,7 +9,9 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'DEBUG'
+LOG_ENABLED = False
+
 
 BOT_NAME = 'progetto_90_scrapy'
 
@@ -17,7 +19,8 @@ SPIDER_MODULES = ['progetto_90_scrapy.spiders']
 NEWSPIDER_MODULE = 'progetto_90_scrapy.spiders'
 
 MONGO_URI = 'localhost'
-MONGO_DATABASE = 'scrapy_test'
+MONGO_DATABASE = 'progetto90'
+MONGO_SECRET = './grant/mongo_secret.txt'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'progetto_90_scrapy (+http://www.yourdomain.com)'
 
@@ -49,9 +52,9 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    'progetto_90_scrapy.middlewares.Progetto90ScrapySpiderMiddleware': 543,
-#}
+# }
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
@@ -71,7 +74,8 @@ ITEM_PIPELINES = {
    #'progetto_90_scrapy.pipelines.SomePipeline': 300,
    'progetto_90_scrapy.pipelines.CheckElementIsDuplicate' : 300,
    'progetto_90_scrapy.pipelines.CheckItemValuesPipeline' : 301,
-   'progetto_90_scrapy.pipelines.MongoPipeline' : 400
+   'progetto_90_scrapy.pipelines.PrintItemsToJson' : 302
+   #,   'progetto_90_scrapy.pipelines.MongoPipeline' : 400
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

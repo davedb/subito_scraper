@@ -20,21 +20,18 @@ server.route({
     path: '/search',
     handler: function (request, reply) {
         var scrappy = new scraper();
-
-
         var ret = scrappy.run((message) => {
             var objJson = JSON.parse(message);
 
             reply(objJson);
-
         });
     }
-});
+}); 
 
 // Start server
 server.start((err) => {
     if (err) {
         throw err;
-    }
+    } 
     console.log(`Server running at: ${server.info.uri}`);
 });

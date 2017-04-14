@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "hapi": "^16.1.0",
-    "pytalk": "^1.0.5",
     "python-shell": "^0.4.0"
   },
   "devDependencies": {

@@ -16,17 +16,20 @@ class SubitoScaperSpider(scrapy.Spider):
         urls = [
             'http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+ninet',
             'http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+f800gs'
+            #'http://www.subito.it/annunci-italia/vendita/usato/?q=bmw+ninet',
+            #'http://www.subito.it/annunci-italia/vendita/usato/?q=bmw+f800gs'
             ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
     #start_urls = ['http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+ninet']
 
     def parse(self, response):
-        listing = response.css('ul.items_listing')
+        listing = response.css('ul.items_listing > li')
         logging.debug('Elementi nel listato: {0}'.format(len(listing), '>20'))
-        current_item = SubitoSingleItemList()
+
         query = response.css('#searchtext::attr(value)').extract_first()
-        for el in listing.css('li'):
+        for el in listing:
+            current_item = SubitoSingleItemList()
             current_item['query'] = query
             current_item['name'] = el.css('article::attr(data-id)').extract_first()
             item_desc = el.css('div.item_description')
@@ -35,29 +38,24 @@ class SubitoScaperSpider(scrapy.Spider):
             current_item['link'] = item_desc.css('h2>a::attr(href)').extract_first()
             current_item['price'] = item_desc.css('span.item_price::text').extract_first()
             current_item['date_scraped'] = self.current_date
+
             item_info_motor = item_desc.css('span.item_info_motori')
             current_item['date_published'] = item_info_motor.css('time::attr(datetime)').extract_first()
             current_item['location'] = item_info_motor.css('span.item_location').css('em.item_city::text').extract_first()
 
-            item_motor = item_desc.css('span.item_motori')
-            current_item['year'] = item_motor.css('div.item_regdate>p::text')[1].extract()
+            item_motor_list = item_desc.css('.item_extra_data > ul')
 
-            mileage = ['no info']
-            try:
-                mileage = [item_motor.css('div.item_mileage>p::text')[1].extract()]
-                mileage.append(item_motor.css('div.item_mileage>p::text')[2].extract())
-            except IndexError as e:
-                pass
-
-            current_item['mileage'] = ', '.join(mileage) if len(mileage) > 1 else mileage[0]
+            for sub_el in item_motor_list.css('li'):
+                c_value = sub_el.css('li::text').extract_first()
+                if c_value:
+                    # mileage field
+                    if c_value.lower().find('km') >= 0:
+                        current_item['mileage'] = c_value
+                    else:
+                        current_item['year'] = c_value
 
             yield current_item
-            # yield {
-            #     'category': desc.css('span.item_category::text').extract_first(),
-            #     'title': desc.css('h2>a::attr(title)').extract_first(),
-            #     'name': desc.css('h2>a::attr(name)').extract_first(),
-            #     'link': desc.css('h2>a::attr(href)').extract_first(),
-            # }
+
 
         next_page = response.css('div.pagination_next>a::attr(href)').extract_first()
         if next_page is not None:

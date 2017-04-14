@@ -30,6 +30,7 @@ class CheckElementIsDuplicate(object):
 
 class CheckItemValuesPipeline(object):
 
+    regex_mileage = r"(\d+)\.?(\d+)?\skm\s?-\s(\d+)\.?(\d+)?"
     # @classmethod
     # def from_crawler(cls, crawler):
     #     return cls(
@@ -66,12 +67,15 @@ class CheckItemValuesPipeline(object):
                 # print('Ratio between t ({0}) and query ({1}): {2}'.format(t, item['query'], rL) )
         else:
             raise DropItem("Missing title in {0}".format(item))
+
         # check category
         if item['category']:
             if item['category'] != 'Moto e Scooter':
-                raise DropItem("Item category is not Moto e Scooter".format(item))
+                pass
+                #raise DropItem("Item category is not Moto e Scooter".format(item))
         else:
-            raise DropItem("Missing category in {0}".format(item))
+            pass
+            #raise DropItem("Missing category in {0}".format(item))
         #check and polish price
         if item['price']:
             # let's transform price written: 6.999 € in 6999
@@ -95,29 +99,57 @@ class CheckItemValuesPipeline(object):
         else:
             raise DropItem("Missing location in {0}".format(item))
 
+        # check and polish mileage
+        if item['mileage']:
+            mileage = item['mileage']
+            match_mileage = re.search(self.regex_mileage, mileage)
+            if match_mileage != None:
+                val_1 = match_mileage.groups()[0] + match_mileage.groups()[1] if match_mileage.groups()[1] else match_mileage.groups()[0]
+                val_2 = match_mileage.groups()[2] + match_mileage.groups()[3] if match_mileage.groups()[3] else match_mileage.groups()[2]
+                
+                mileage_arr = [int(val_1), int(val_2)]
+                item['mileage'] = mileage_arr
+
+        # check and polish year
+        if item['year']:
+            item['year'] = int(item['year'])
+
+        return item
+
+class PrintItemsToJson(object):
+
+    def process_item(self, item, spider):
+        print(dict(item))
         return item
 
 class MongoPipeline(object):
 
-    collection_name = 'scrapy_items'
+    collection_name = 'scraped_items'
 
-    def __init__(self, mongo_uri, mongo_db):
+    def __init__(self, mongo_uri, mongo_db, mongo_secret):
         self.mongo_uri = mongo_uri
         self.mongo_db = mongo_db
+        f = open(mongo_secret, 'r')
+        ulist = f.read().split(',')
+        self.mongo_u = ulist[0].strip()
+        self.mongo_p = ulist[1].strip()
+        f.close()
 
     @classmethod
     def from_crawler(cls, crawler):
         return cls(
             mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
+            mongo_db=crawler.settings.get('MONGO_DATABASE', 'items'),
+            mongo_secret=crawler.settings.get('MONGO_SECRET')
         )
 
     def open_spider(self, spider):
+
         #self.client = pymongo.MongoClient(self.mongo_uri)
         self.client = pymongo.MongoClient(self.mongo_uri, 27017)
         try:
-            self.client['admin'].authenticate('davide', 'laCucc4r4cia', mechanism='SCRAM-SHA-1')
             self.db = self.client[self.mongo_db]
+            self.db.authenticate(self.mongo_u, self.mongo_p, mechanism='SCRAM-SHA-1')
         except Exception as e:
             print('mongo db auth error %s' % e)
             #return self
