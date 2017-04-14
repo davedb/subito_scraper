@@ -1,6 +1,3 @@
-const PythonShell = require('python-shell');
-
-
 function scraper_module() {
     var done = false;
 

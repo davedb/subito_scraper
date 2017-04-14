@@ -3,8 +3,8 @@ from scrapy.utils.project import get_project_settings
 
 class Main:
 
-    def __init__(self):
-        print('inizializzazione')
+   # def __init__(self):
+        # print('inizializzazione')
 
     #def monitor_routine(self):
         #query db to get info.
@@ -17,6 +17,7 @@ class Main:
         items = process.crawl('subito')
         process.start() # the script will block here until the crawling is finished
 
+        print("###END###")
         # print(type(items))
         # print(items)
         # run monitoring informations
