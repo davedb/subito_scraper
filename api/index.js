@@ -2,7 +2,7 @@
 const scraper = require('./scraper');
 const PythonShell = require('python-shell');
 const utils = require('./core/utils');
-
+const settings = require('./config/settings');
 var express = require('express')
 var app = express()
 
@@ -10,14 +10,14 @@ var app = express()
 
 // routes
 app.get('/', function (req, res) {
-    res.send('The Api is working properly!')
+    res.send('secondhandy.com echo')
 });
 
 app.get('/search', function (req, res) {
     var response = '';
 
-    var scrappy = new scraper();
-    var ret = scrappy.run(new PythonShell('../progetto_90_scrapy/main.py'), (message) => {
+    var scrapy = new scraper();
+    var ret = scrapy.run(new PythonShell(settings.scrapy_main), (message) => {
         if (message == '###END###') {
             response = utils.formatScraperArray(response);
 
@@ -30,5 +30,5 @@ app.get('/search', function (req, res) {
 });
 
 app.listen(8080, function () {
-    console.log('Example app listening on port 8080!')
+    console.log('secondhandy.com listening on port 8080')
 });
