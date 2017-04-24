@@ -14,9 +14,9 @@ class SubitoScaperSpider(scrapy.Spider):
 
     def start_requests(self):
         urls = [
-            'http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+ninet',
-            'http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+f800gs'
-            #'http://www.subito.it/annunci-italia/vendita/usato/?q=bmw+ninet',
+            # 'http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+ninet',
+            # 'http://www.subito.it/annunci-italia/vendita/moto-e-scooter/?q=bmw+f800gs'
+            'http://www.subito.it/annunci-italia/vendita/usato/?q='+self.search_term,
             #'http://www.subito.it/annunci-italia/vendita/usato/?q=bmw+f800gs'
             ]
         for url in urls:
