@@ -5,8 +5,8 @@ var baseUrl = 'http://localhost:8080/';
 
 const retStr = 'JSON ret error message';
 
-describe('# Scraper', () => {
-    describe('run', () => {
+describe('# Scraper -', () => {
+    describe('run:', () => {
         it('when is called then it returns test message', () => {
             var scrappy = new scraper();
             var callback = sinon.spy();
@@ -16,7 +16,7 @@ describe('# Scraper', () => {
             };
 
             var testRet = '';
-            var on = sinon.stub(pythonScraper, 'on', (message, c1) => {
+            var on = sinon.stub(pythonScraper, 'on').callsFake((message, c1) => {
                 testRet = retStr;
                 c1();
             });
