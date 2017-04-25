@@ -13,12 +13,23 @@ app.get('/', function (req, res) {
     res.send('secondhandy.com echo')
 });
 
+// search
+// params:
+// k => keyword
+// items => max items count
 app.get('/search', function (req, res) {
     var response = '';
+    var keyword = req.query.k;
+    var items = req.query.items;
 
-    var scrapy = new scraper();
-    var ret = scrapy.run(new PythonShell(settings.scrapy_main), (message) => {
-        if (message == '###END###') {
+    var scrapy = new scraper();    
+    var shell = new PythonShell(settings.scrapy_main, {
+        args : ['-s', keyword]
+    });
+   
+   var limit = 0;
+    var ret = scrapy.run(shell, (message) => {
+        if (message == '###END###' || limit == items) {
             response = utils.formatScraperArray(response);
 
             var objJson = JSON.parse(response);
@@ -26,7 +37,8 @@ app.get('/search', function (req, res) {
         }
 
         response = response + message + ',';
-    })
+        limit ++;
+    });
 });
 
 app.listen(8080, function () {
