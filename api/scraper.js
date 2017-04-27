@@ -1,15 +1,15 @@
 var PythonShell = require('python-shell');
 var settings = require('./config/settings');
 
-function scraper_module(args) {
+function scraper_module(keyword) {
 
     var shell = new PythonShell(settings.scrapy_main, {
-        args: args
+        args: ['-s', keyword]
     });
 
     this.run = function (callback) {
 
-        var ret = scraper.on('message', function (message) {
+        var ret = shell.on('message', function (message) {
             callback(message);
         });
     };

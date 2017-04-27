@@ -1,6 +1,5 @@
 'use strict';
 var scraper = require('../scraper');
-var PythonShell = require('python-shell');
 var settings = require('../config/settings');
 var utils = require('../core/utils');
 var ValidationException = require('../core/exceptions/ValidationException');
@@ -19,12 +18,12 @@ function search(req, res) {
             res.send("va");
             throw new ValidationException('keyword is mandatory');
         }
-        // if(items !== undefined && 
-        //     (items !== parseInt(items) || items < 1 || items > 100)){
-        //     throw new ValidationException('items parameter is not valid');
-        // }
+        if("undefined" === typeof items && 
+            (items !== parseInt(items) || items < 1 || items > 100)){
+            throw new ValidationException('items parameter is not valid');
+        }
 
-        var scrapy = new scraper(['-s', keyword]);
+        var scrapy = new scraper(keyword);
 
         var limit = 0;
         var ret = scrapy.run((message) => {
@@ -32,14 +31,12 @@ function search(req, res) {
                 response = utils.formatScraperArray(response);
 
                 var objJson = JSON.parse(response);
-                // res.send(objJson);
+                res.send(objJson);
             }
 
             response = response + message + ',';
             limit++;
         });
-
-         res.send("end");
 }
 
 module.exports = {
