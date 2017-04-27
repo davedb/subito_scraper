@@ -7,7 +7,7 @@ var searchController = require('./controllers/search');
 
 // routes
 app.get('/', function (req, res) {
-    res.send('secondhandy.com echo')
+    res.send('secondhandy.com echo');
 });
 
 // search

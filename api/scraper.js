@@ -1,9 +1,16 @@
-function scraper_module() {
+var PythonShell = require('python-shell');
+var settings = require('./config/settings');
 
-    this.run = function (scraper, callback) {
+function scraper_module(args) {
+
+    var shell = new PythonShell(settings.scrapy_main, {
+        args: args
+    });
+
+    this.run = function (callback) {
 
         var ret = scraper.on('message', function (message) {
-                callback(message);
+            callback(message);
         });
     };
 }
