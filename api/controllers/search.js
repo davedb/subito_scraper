@@ -1,25 +1,27 @@
 'use strict';
+
 var scraper = require('../scraper');
 var settings = require('../config/settings');
 var utils = require('../core/utils');
 var ValidationException = require('../core/exceptions/ValidationException');
 
-// # Search
-// params:
-// k => keyword
-// items => max items count
-function search(req, res) {
+class searchController {
+
+    // # Search
+    // params:
+    // k => keyword
+    // items => max items count
+    search(req, res) {
         var response = '';
         var keyword = req.query.k;
         var items = req.query.items;
 
         // validation
-        if (keyword.trim() === '') {
-            res.send("va");
+        if ("undefined" === typeof keyword || keyword.trim() === '') {
             throw new ValidationException('keyword is mandatory');
         }
-        if("undefined" === typeof items && 
-            (items !== parseInt(items) || items < 1 || items > 100)){
+        if ("undefined" !== typeof items &&
+            (items !== parseInt(items) || items < 1 || items > 100)) {
             throw new ValidationException('items parameter is not valid');
         }
 
@@ -32,13 +34,13 @@ function search(req, res) {
 
                 var objJson = JSON.parse(response);
                 res.send(objJson);
+                return;
             }
 
             response = response + message + ',';
             limit++;
         });
+    }
 }
 
-module.exports = {
-    search: search
-};
+module.exports = searchController;

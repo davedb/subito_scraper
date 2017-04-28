@@ -13,7 +13,9 @@ describe('# search controller -', () => {
                     }
                 };
                 var res = {};
-                search.search(req, res);
+                 var controller = new search();
+                controller.search(req, res);
+
             } catch (err) {
                 assert.equal(err.name, 'ValidationException');
                 assert.equal(err.message, 'keyword is mandatory');
@@ -31,7 +33,8 @@ describe('# search controller -', () => {
                     }
                 };
                 var res = {};
-                search.search(req, res);
+                var controller = new search();
+                controller.search(req, res);
             } catch (err) {
                 assert.equal(err.name, 'ValidationException');
                 assert.equal(err.message, 'keyword is mandatory');
@@ -50,13 +53,14 @@ describe('# search controller -', () => {
                     }
                 };
                 var res = {};
-                search.search(req, res);
+                var controller = new search();
+                controller.search(req, res);
             } catch (err) {
                 assert.equal(err.name, 'ValidationException');
                 assert.equal(err.message, 'items parameter is not valid');
                 return;
             }
-            
+
             assert.fail();
         });
 
@@ -69,13 +73,14 @@ describe('# search controller -', () => {
                     }
                 };
                 var res = {};
-                search.search(req, res);
+                var controller = new search();
+                controller.search(req, res);
             } catch (err) {
                 assert.equal(err.name, 'ValidationException');
                 assert.equal(err.message, 'items parameter is not valid');
                 return;
             }
-                        
+
             assert.fail();
         });
 
@@ -88,7 +93,8 @@ describe('# search controller -', () => {
                     }
                 };
                 var res = {};
-                search.search(req, res);
+                var controller = new search();
+                controller.search(req, res);
             } catch (err) {
                 assert.equal(err.name, 'ValidationException');
                 assert.equal(err.message, 'items parameter is not valid');
@@ -99,7 +105,32 @@ describe('# search controller -', () => {
         });
 
         it('when is called with valid parameters then the response is properly populated', () => {
-            assert.fail();
+            var req = {
+                query: {
+                    k: 'test',
+                    items: 1
+                }
+            };
+            var res = {
+                send: sinon.spy()
+            };
+            var controller = new search();
+
+            var runStub = sinon.stub(scraper.prototype, 'run');
+            var ctorStub = sinon.stub(scraper.prototype, 'ctor');
+            var message = '{"query":"bmw","price":"4400","category":null,"name":"205201370","location":"PA","link":"http://www.subito.it/","date_scraped":"2017-4-28T0:0:0.0Z","title":"Bmw","mileage":[40000,44999],"year":2000,"date_published":"2017-4-28T0:0:0.0Z"}';
+            
+            runStub.callsFake((callback) => {
+
+                callback(message);
+                callback("###END###");
+            });
+
+            controller.search(req, res);
+            sinon.assert.calledWith(res.send, JSON.parse('[' + message + ']'));
+
+            runStub.restore();
+            ctorStub.restore();
         });
     });
 });

@@ -3,7 +3,9 @@
 var settings = require('./config/settings');
 var express = require('express');
 var app = express();
-var searchController = require('./controllers/search');
+var searchModule = require('./controllers/search');
+
+var searchController = new searchModule();
 
 // routes
 app.get('/', function (req, res) {
