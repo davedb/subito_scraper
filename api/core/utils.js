@@ -15,7 +15,7 @@ function replaceApex(input) {
     input = input.replace(/ '/g, " \"");
     input = input.replace(/':/g, "\":");
     input = input.replace(/\{'/g, "{\"");
-    input = input.replace(/'\}/g, "\"}");    
+    input = input.replace(/'\}/g, "\"}");
     input = input.replace(/',/g, "\",");
     return input;
 }
@@ -24,7 +24,12 @@ function formatScraperArray(input) {
     var ret = '';
 
     // remove last comma
-    ret = input.substring(0, input.length - 1);
+    if (input.substring(input.length - 1) === ',') {
+        ret = input.substring(0, input.length - 1);
+    }
+    else{
+        ret = input;
+    }
 
     // fix dates
     ret = replaceNone(replaceDates(ret));

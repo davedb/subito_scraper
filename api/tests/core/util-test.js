@@ -1,8 +1,8 @@
 var assert = require('chai').assert;
-const utils = require('../core/utils');
+const utils = require('../../core/utils');
 
-describe('# utils', () => {
-    describe('replaceDates', () => {
+describe('# utils - ', () => {
+    describe('replaceDates - ', () => {
         it('when is called with a valid input returns the correct output', () => {
             var input = 'd": datetime.datetime(2017, 4, 14, 0, 0), "name": "203607457", "location": "SS", "year": 2016, "date_scraped": datetime.datetime(2018, 2, 1, 0, 0), "title"';
             
@@ -11,6 +11,19 @@ describe('# utils', () => {
 
             // asserts
             assert.equal(ret, 'd": "2017-4-14T0:0:0.0Z", "name": "203607457", "location": "SS", "year": 2016, "date_scraped": "2018-2-1T0:0:0.0Z", "title"');
+        });
+    });
+
+    describe('formatScraperArray - ', () =>{
+        it('when called with \'None\' then it is replaced with null and an array is returned', () =>{
+            // setup
+            var input = '{ test : "None"}';
+
+            // act
+            var ret = utils.formatScraperArray(input);
+            
+            //assert
+            assert.equal(ret, '[{ test : "null"}]');
         });
     });
 });

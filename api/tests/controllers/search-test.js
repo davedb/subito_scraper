@@ -1,10 +1,21 @@
 var assert = require('chai').assert;
-var scraper = require('../../scraper');
 var sinon = require('sinon');
-var search = require('../../controllers/search');
+var proxyquire = require('proxyquire');
+
+var searchController = {};
+var run = {};
 
 describe('# search controller -', () => {
     describe('search -', () => {
+
+        beforeEach(() => {
+            searchController = proxyquire('../../controllers/search', {
+                '../scraper': function (keyword) {
+                    this.run = run
+                }
+            });
+        });
+
         it('when the keyword parameter is empty then it raises an exception', () => {
             try {
                 var req = {
@@ -13,7 +24,8 @@ describe('# search controller -', () => {
                     }
                 };
                 var res = {};
-                 var controller = new search();
+
+                var controller = new searchController();
                 controller.search(req, res);
 
             } catch (err) {
@@ -26,14 +38,14 @@ describe('# search controller -', () => {
         });
 
         it('when the keyword parameter is undefined then it raises an exception', () => {
-             try {
+            try {
                 var req = {
                     query: {
                         k: ''
                     }
                 };
                 var res = {};
-                var controller = new search();
+                var controller = new searchController();
                 controller.search(req, res);
             } catch (err) {
                 assert.equal(err.name, 'ValidationException');
@@ -45,15 +57,15 @@ describe('# search controller -', () => {
         });
 
         it('when the items parameter is not an integer then it raises an exception', () => {
-             try {
+            try {
                 var req = {
                     query: {
                         k: 'test',
-                        items : 'string'
+                        items: 'string'
                     }
                 };
                 var res = {};
-                var controller = new search();
+                var controller = new searchController();
                 controller.search(req, res);
             } catch (err) {
                 assert.equal(err.name, 'ValidationException');
@@ -65,15 +77,15 @@ describe('# search controller -', () => {
         });
 
         it('when the items parameter is lower than 1 then it raises an exception', () => {
-             try {
+            try {
                 var req = {
                     query: {
                         k: 'test',
-                        items : 0
+                        items: 0
                     }
                 };
                 var res = {};
-                var controller = new search();
+                var controller = new searchController();
                 controller.search(req, res);
             } catch (err) {
                 assert.equal(err.name, 'ValidationException');
@@ -89,11 +101,11 @@ describe('# search controller -', () => {
                 var req = {
                     query: {
                         k: 'test',
-                        items : 101
+                        items: 101
                     }
                 };
                 var res = {};
-                var controller = new search();
+                var controller = new searchController();
                 controller.search(req, res);
             } catch (err) {
                 assert.equal(err.name, 'ValidationException');
@@ -114,23 +126,16 @@ describe('# search controller -', () => {
             var res = {
                 send: sinon.spy()
             };
-            var controller = new search();
+            var controller = new searchController();
 
-            var runStub = sinon.stub(scraper.prototype, 'run');
-            var ctorStub = sinon.stub(scraper.prototype, 'ctor');
             var message = '{"query":"bmw","price":"4400","category":null,"name":"205201370","location":"PA","link":"http://www.subito.it/","date_scraped":"2017-4-28T0:0:0.0Z","title":"Bmw","mileage":[40000,44999],"year":2000,"date_published":"2017-4-28T0:0:0.0Z"}';
-            
-            runStub.callsFake((callback) => {
-
+            run = sinon.stub().callsFake((callback) => {
                 callback(message);
                 callback("###END###");
             });
-
+            
             controller.search(req, res);
             sinon.assert.calledWith(res.send, JSON.parse('[' + message + ']'));
-
-            runStub.restore();
-            ctorStub.restore();
         });
     });
 });

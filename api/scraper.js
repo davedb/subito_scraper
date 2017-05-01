@@ -5,22 +5,17 @@ var settings = require('./config/settings');
 var shell = {};
 
 class scraper {
-
     constructor(keyword) {
-        this.ctor(keyword);
-    }
-
-    ctor(keyword){
         shell = new PythonShell(settings.scrapy_main, {
             args: ['-s', keyword]
         });
     }
 
     run(callback) {
-            shell.on('message', function (message) {
-                callback(message);
-            });
-        };
+        shell.on('message', function (message) {
+            callback(message);
+        });
+    };
 }
 
 module.exports = scraper;

@@ -1,30 +1,33 @@
 var assert = require('chai').assert;
-var scraper = require('../scraper');
+var proxyquire = require('proxyquire');
 var sinon = require('sinon');
-var PythonShell = require('python-shell');
-
+var scraper = {};
+var on = {}
 describe('# Scraper -', () => {
     describe('run:', () => {
+        beforeEach(() => {
+            scraper = proxyquire('../scraper', {
+                'python-shell': function () {
+                    this.on = on
+                }
+            });
+        });
+
         it('when is called then it returns test message', () => {
+            // setup
+            var spy = sinon.spy();
+            on = function (msg, callback) {
+                msg = 'test msg';
+                callback(msg);
+            };
 
-             var fnSpy = function(){
-                console.log('test');
-             };
-            
-            var ctorStub = sinon.stub(scraper, 'ctor');
-            var onStub = sinon.stub(PythonShell.prototype, 'on')
-                .callsFake('msg', (fn) => {
-                    var msg = 'msg';
-                    fn(msg);
-                });
-
-            // act
             var scrapy = new scraper('keyword');
-            scrapy.run(fnSpy);
+            
+            // act
+            scrapy.run(spy);
 
             // assert
-            assert(callback.called);
-            sinon.assert.calledWith(fnSpy, 'msg');
+            sinon.assert.calledWith(spy, 'test msg');
 
         });
     });
