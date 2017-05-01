@@ -17,13 +17,30 @@ describe('# utils - ', () => {
     describe('formatScraperArray - ', () =>{
         it('when called with \'None\' then it is replaced with null and an array is returned', () =>{
             // setup
-            var input = '{ test : "None"}';
+            var input = '{ "test" : "None"}';
 
             // act
             var ret = utils.formatScraperArray(input);
             
             //assert
-            assert.equal(ret, '[{ test : "null"}]');
+            var exp = JSON.parse('[{ "test" : "null"}]');
+            var retObj = JSON.parse(ret);
+            assert.equal(exp.test, retObj.test) ;
+        });
+
+        it('when called with apex then replace them with quotes', () => {
+            // setup 
+            var input = "{ 'test1' : 'value1', 'test2' : 'value2'}";
+
+            // act
+            var ret = utils.formatScraperArray(input);
+
+            // assert
+            var retObj = JSON.parse(ret);
+            var exp = JSON.parse("[{ \"test1\" : \"value1\", \"test2\" : \"value2\"}]");
+
+            assert.equal(retObj.test1, exp.test1);
+            assert.equal(retObj.test2, exp.test2);
         });
     });
 });

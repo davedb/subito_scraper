@@ -12,11 +12,8 @@ function replaceNone(input) {
 }
 
 function replaceApex(input) {
-    input = input.replace(/ '/g, " \"");
-    input = input.replace(/':/g, "\":");
-    input = input.replace(/\{'/g, "{\"");
-    input = input.replace(/'\}/g, "\"}");
-    input = input.replace(/',/g, "\",");
+    input = input.replace(" ", "");
+    input = input.replace(/'/g, "\"");
     return input;
 }
 
@@ -33,7 +30,6 @@ function formatScraperArray(input) {
 
     // fix dates
     ret = replaceNone(replaceDates(ret));
-
     ret = '[' + replaceApex(ret) + ']';
 
     return ret;
