@@ -21,7 +21,8 @@
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceRoot}/api/tests"
+                "${workspaceRoot}/api/tests",
+                "--recursive"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         },

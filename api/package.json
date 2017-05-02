@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests --reporter progress",
+    "test": "mocha tests --recursive --reporter progress",
     "start": "node index.js --port 7531"
   },
   "author": "",
@@ -16,6 +16,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
+    "proxyquire": "^1.7.11",
     "sinon": "^2.1.0"
   }
 }

@@ -1,11 +1,21 @@
-function scraper_module() {
+'use strict';
 
-    this.run = function (scraper, callback) {
+var PythonShell = require('python-shell');
+var settings = require('./config/settings');
+var shell = {};
 
-        var ret = scraper.on('message', function (message) {
-                callback(message);
+class scraper {
+    constructor(keyword) {
+        shell = new PythonShell(settings.scrapy_main, {
+            args: ['-s', keyword]
+        });
+    }
+
+    run(callback) {
+        shell.on('message', function (message) {
+            callback(message);
         });
     };
 }
 
-module.exports = scraper_module;
+module.exports = scraper;

@@ -1,32 +1,34 @@
 var assert = require('chai').assert;
-var scraper = require('../scraper');
+var proxyquire = require('proxyquire');
 var sinon = require('sinon');
-var baseUrl = 'http://localhost:8080/';
+var scraper = {};
+var on = {}
+describe('# Scraper -', () => {
+    describe('run:', () => {
+        beforeEach(() => {
+            scraper = proxyquire('../scraper', {
+                'python-shell': function () {
+                    this.on = on
+                }
+            });
+        });
 
-const retStr = 'JSON ret error message';
-
-describe('# Scraper', () => {
-    describe('run', () => {
         it('when is called then it returns test message', () => {
-            var scrappy = new scraper();
-            var callback = sinon.spy();
-            
-            var pythonScraper = {
-                on: function () { }
+            // setup
+            var spy = sinon.spy();
+            on = function (msg, callback) {
+                msg = 'test msg';
+                callback(msg);
             };
 
-            var testRet = '';
-            var on = sinon.stub(pythonScraper, 'on', (message, c1) => {
-                testRet = retStr;
-                c1();
-            });
-
+            var scrapy = new scraper('keyword');
+            
             // act
-            scrappy.run(pythonScraper, callback);
+            scrapy.run(spy);
 
             // assert
-            assert(callback.called);
-            assert.equal(testRet, retStr);
+            sinon.assert.calledWith(spy, 'test msg');
+
         });
     });
 });
