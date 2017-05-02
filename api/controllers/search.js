@@ -21,7 +21,7 @@ class searchController {
             throw new ValidationException('keyword is mandatory');
         }
         if ("undefined" !== typeof items &&
-            (items !== parseInt(items) || items < 1 || items > 100)) {
+            (isNaN(parseInt(items)) || parseInt(items) < 1 || parseInt(items) > 100)) {
             throw new ValidationException('items parameter is not valid');
         }
 
@@ -34,6 +34,8 @@ class searchController {
 
                 var objJson = JSON.parse(response);
                 res.send(objJson);
+
+                // res.send(response);
                 return;
             }
 

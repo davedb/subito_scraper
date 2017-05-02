@@ -12,8 +12,12 @@ function replaceNone(input) {
 }
 
 function replaceApex(input) {
-    input = input.replace(" ", "");
-    input = input.replace(/'/g, "\"");
+    input = input.replace(/ '/g, " \"");
+    input = input.replace(/' /g, "\" ");
+    input = input.replace(/':/g, "\":");
+    input = input.replace(/\{'/g, "{\"");
+    input = input.replace(/'\}/g, "\"}");
+    input = input.replace(/',/g, "\",");
     return input;
 }
 
@@ -24,7 +28,7 @@ function formatScraperArray(input) {
     if (input.substring(input.length - 1) === ',') {
         ret = input.substring(0, input.length - 1);
     }
-    else{
+    else {
         ret = input;
     }
 
