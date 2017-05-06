@@ -13,8 +13,19 @@ app.get('/', function (req, res) {
 });
 
 // search
-app.get('/search', searchController.search);
+app.get('/search', function(req, res){
+    try{
+         searchController.search(req, res);
+    }catch(err){
+        if(err.name === 'ValidationException'){
+            res.status = 400;
+            res.send(err.message);
+        }
+    }
+});
 
 app.listen(settings.port, function () {
     console.log('secondhandy.com listening on port ' + settings.port)
 });
+
+module.exports = app;
