@@ -18,8 +18,8 @@ app.get('/search', function(req, res){
          searchController.search(req, res);
     }catch(err){
         if(err.name === 'ValidationException'){
-            res.status = 400;
-            res.send(err.message);
+            // res.statusCode = 400
+           // res.send(err.message);
         }
     }
 });

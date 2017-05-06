@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests --recursive --reporter progress",
-    "start": "node index.js --port 7531"
+    "test": "mocha tests --recursive --reporter progress --timeout 15000",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +18,7 @@
     "chai-http": "^3.0.0",
     "mocha": "^3.2.0",
     "proxyquire": "^1.7.11",
+    "request": "^2.81.0",
     "sinon": "^2.1.0"
   }
 }
