@@ -39,7 +39,28 @@ describe("Web API", () => {
         it("when called with valid parameters returns", (done) => { 
             request.get("http://localhost:8080/search?k=piaggio&items=3", (err, res, body) => {
                 assert.equal(res.statusCode, 200);
-                assert.equal(res.body, "items parameter is not valid");
+
+                var obj = JSON.parse(res.body);
+
+                assert.equal(obj.length, 3);
+
+                obj.forEach(function(element) {
+                    assert.isDefined(element.query);
+                    assert.isDefined(element.mileage);
+                    assert.isDefined(element.category);
+                    assert.isDefined(element.location);
+                    assert.isDefined(element.year);
+                    assert.isDefined(element.date_published);
+                    assert.isDefined(element.title);
+                    assert.isDefined(element.date_scraped);
+                    assert.isDefined(element.name);
+                    assert.isDefined(element.link);
+                    assert.isDefined(element.price);
+
+                     assert.equal(Object.keys(element).length, 11);
+                }, this);
+
+               
                 done();  
             });     
         });

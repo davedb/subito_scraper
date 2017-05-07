@@ -14,7 +14,17 @@ app.get('/', function (req, res) {
 // params:
 // k => keyword
 // items => max items count
-app.get('/search', searchController.search);
+app.get('/search', function (req, res) {
+    try {
+        searchController.search(req, res);
+    }
+    catch (err) {
+        if (err.name === 'ValidationException') {
+            res.statusCode = 400;
+            res.send(err.message);
+        }
+    }
+});
 
 app.listen(8080, function () {
     console.log('secondhandy.com listening on port 8080')
