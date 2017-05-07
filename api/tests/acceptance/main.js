@@ -1,7 +1,6 @@
 'use strict'
 
 var chai = require('chai');
-//var server = require("../../index");
 var assert = chai.assert;
 var request = require('request'); 
 var instance;
