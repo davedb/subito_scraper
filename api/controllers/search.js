@@ -4,6 +4,7 @@ var scraper = require('../scraper');
 var settings = require('../config/settings');
 var utils = require('../core/utils');
 var ValidationException = require('../core/exceptions/ValidationException');
+const PythonShell = require('python-shell');
 
 class searchController {
 
@@ -16,16 +17,6 @@ class searchController {
         var keyword = req.query.k;
         var items = req.query.items;
 
-        // validation
-        if ("undefined" === typeof keyword || keyword.trim() === '') {
-            throw new ValidationException('keyword is mandatory');
-        }
-        if ("undefined" !== typeof items &&
-
-            (isNaN(parseInt(items)) || parseInt(items) < 1 || parseInt(items) > 100)) {
-            throw new ValidationException('items parameter is not valid');
-        }
-
         var scrapy = new scraper(keyword);
 
         var limit = 0;
@@ -35,7 +26,6 @@ class searchController {
 
                 var objJson = JSON.parse(response);
                 res.send(objJson);
-                return;
             }
 
             response = response + message + ',';

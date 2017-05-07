@@ -18,4 +18,4 @@ class scraper {
     };
 }
 
-module.exports = scraper;
+ module.exports = scraper;
