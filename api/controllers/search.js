@@ -17,6 +17,17 @@ class searchController {
         var keyword = req.query.k;
         var items = req.query.items;
 
+        // validation
+        if ("undefined" === typeof keyword || keyword.trim() === '') {
+            throw new ValidationException('keyword is mandatory');
+        }
+        
+        if ("undefined" !== typeof items &&
+
+            (isNaN(parseInt(items)) || parseInt(items) < 1 || parseInt(items) > 100)) {
+            throw new ValidationException('items parameter is not valid');
+        }
+
         var scrapy = new scraper(keyword);
 
         var limit = 0;
