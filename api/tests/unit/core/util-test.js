@@ -1,5 +1,5 @@
 var assert = require('chai').assert;
-const utils = require('../../core/utils');
+const utils = require('../../../core/utils');
 
 describe('# utils - ', () => {
     describe('replaceDates - ', () => {

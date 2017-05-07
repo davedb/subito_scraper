@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests --recursive --reporter progress",
+    "test": "mocha tests/unit --recursive --reporter progress",
     "start": "node index.js",
     "acceptance-test" : "mocha tests/acceptance --recursive --timeout 15000"
   },

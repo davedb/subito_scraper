@@ -9,7 +9,7 @@ describe('# search controller -', () => {
     describe('search -', () => {
 
         beforeEach(() => {
-            searchController = proxyquire('../../controllers/search', {
+            searchController = proxyquire('../../../controllers/search', {
                 '../scraper': function (keyword) {
                     this.run = run
                 }

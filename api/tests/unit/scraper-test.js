@@ -6,7 +6,7 @@ var on = {}
 describe('# Scraper -', () => {
     describe('run:', () => {
         beforeEach(() => {
-            scraper = proxyquire('../scraper', {
+            scraper = proxyquire('../../scraper', {
                 'python-shell': function () {
                     this.on = on
                 }
