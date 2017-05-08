@@ -1,29 +1,27 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <title>Angular QuickStart</title>
-    <base href="/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles.css">
 
-    <!-- Polyfill(s) for older browsers -->
-    <script src="node_modules/core-js/client/shim.min.js"></script>
+<head></head>
+<meta charset="UTF-8">
+<title> secondhandy.it </title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css">
+<style>
+    body {
+        padding: 50px 0
+    }
+</style>
 
-    <script src="node_modules/zone.js/dist/zone.js"></script>
-    <script src="node_modules/systemjs/dist/system.src.js"></script>
+<!-- js -->
+<!-- load the dependencies -->
+<script src="node_modules/core-js/client/shim.min.js"></script>
+<script src="node_modules/zone.js/dist/zone.js"></script>
+<script src="node_modules/reflect-metadata/Reflect.js"></script>
 
-    <script src="systemjs.config.js"></script>
-    <script>
-      System.import('main.js').catch(function(err){ console.error(err); });
-    </script>
-  </head>
+<!-- load our angular app with systemjs -->
+<script src="node_modules/systemjs/dist/system.src.js"></script>
+<script src="systemjs.config.js"></script>
 
-  <body>
-    <my-app>Loading AppComponent content here ...</my-app>
-    <input type="text" value=""/>
-    <button>search</button>
+<body class="container">
+    <my-app></my-app>
+</body>
 
-    <div id="results"></div>
-  </body>
 </html>
