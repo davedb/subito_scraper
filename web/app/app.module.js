@@ -10,7 +10,6 @@ var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var app_component_1 = require("./app.component");
 var search_result_component_1 = require("./search-result/search-result.component");
-var search_result_li_component_1 = require("./search-result/search-result-li.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -22,8 +21,7 @@ AppModule = __decorate([
         ],
         declarations: [
             app_component_1.AppComponent,
-            search_result_component_1.SearchResultComponent,
-            search_result_li_component_1.SearchResultLiComponent
+            search_result_component_1.SearchResultComponent
         ],
         bootstrap: [app_component_1.AppComponent]
     })

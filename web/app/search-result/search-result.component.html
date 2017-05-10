@@ -1,4 +1,13 @@
 <div>
     Search Results
-    <search-result-li></search-result-li>
+    <div *ngFor="let result of results" class="row" style="margin: 2px">
+        <div>
+            <div class="col-md-2">
+                <img src="/content/img/placeholder.png" alt="" width="50">
+            </div>
+            <div class="col-md-10" style="vertical-align: middle">
+                <a href="{{result.link}}">{{result.title}}</a>
+            </div>
+        </div>
+    </div>
 </div>

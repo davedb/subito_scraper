@@ -9,6 +9,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var SearchResultComponent = (function () {
     function SearchResultComponent() {
+        this.results = [
+            {
+                title: "test",
+                link: "http://google.com"
+            },
+            {
+                title: "test2",
+                link: "http://google.co.uk"
+            }
+        ];
     }
     return SearchResultComponent;
 }());
