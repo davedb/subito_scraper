@@ -15,7 +15,7 @@ var AppComponent = (function () {
 AppComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
-        template: "\n    <div class=\"jumbotron\">\n      <h1>Welcome to Our App!</h1>\n    </div>",
+        template: "\n       <header>\n          <nav class=\"navbar navbar-default\">\n              <div class=\"navbar-header\">\n                  <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\">\n              <span class=\"sr-only\">Toggle navigation</span>\n              <span class=\"icon-bar\"></span>\n              <span class=\"icon-bar\"></span>\n              <span class=\"icon-bar\"></span>\n              </button>\n                  <a class=\"navbar-brand\" href=\"#\">secondhandy.it</a>\n              </div>\n              <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n                  <ul class=\"nav navbar-nav\">\n                  </ul>\n                  <form class=\"navbar-form navbar-left\" role=\"search\">\n                      <div class=\"form-group\">\n                          <input type=\"text\" class=\"form-control\" placeholder=\"Search\">\n                      </div>\n                      <button type=\"submit\" class=\"btn btn-success\">cerca</button>\n                  </form>\n              </div>\n          </nav>\n      </header>\n\n      <main>\n          <div class=\"jumbotron\">\n              <h1>{{message}}</h1>\n          </div>\n\n      </main>\n      <footer class=\"text-center\">\n          Copyright &copy;2017\n      </footer>\n    ",
         styles: ["\n    .jumbotron { box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); }\n  "]
     })
 ], AppComponent);
