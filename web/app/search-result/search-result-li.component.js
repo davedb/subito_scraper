@@ -7,18 +7,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var AppComponent = (function () {
-    function AppComponent() {
-        this.message = 'test message';
+var SearchResultLiComponent = (function () {
+    function SearchResultLiComponent() {
+        this.link = "http://google.com";
+        this.title = "title test";
     }
-    return AppComponent;
+    return SearchResultLiComponent;
 }());
-AppComponent = __decorate([
+SearchResultLiComponent = __decorate([
     core_1.Component({
-        selector: 'app',
-        templateUrl: '/app/app.component.html',
-        styles: ["\n    .jumbotron { box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2); }\n  "]
+        selector: 'search-result-li',
+        templateUrl: '/app/search-result/search-result-li.component.html'
     })
-], AppComponent);
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+], SearchResultLiComponent);
+exports.SearchResultLiComponent = SearchResultLiComponent;
+//# sourceMappingURL=search-result-li.component.js.map

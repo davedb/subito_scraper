@@ -15,7 +15,7 @@ var SearchResultComponent = (function () {
 SearchResultComponent = __decorate([
     core_1.Component({
         selector: 'search-result',
-        template: "\n    <div>\n        <a href=\"{{link}}\">{{title}}</a>\n    </div>\n    "
+        templateUrl: '/app/search-result/search-result.component.html'
     })
 ], SearchResultComponent);
 exports.SearchResultComponent = SearchResultComponent;

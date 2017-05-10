@@ -2,13 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
     selector : 'search-result',
-    template: `
-    <div>
-        <a href="{{link}}">{{title}}</a>
-    </div>
-    `
+    templateUrl : '/app/search-result/search-result.component.html'
 })
 export class SearchResultComponent{
-    link : "http://google.com"
-    title : "title test"
 }
