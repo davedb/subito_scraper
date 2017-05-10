@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
+import { ResultService } from "../services/result.service";
 
 @Component({
     selector: 'search-result',
-    templateUrl: '/app/search-result/search-result.component.html'
+    templateUrl: '/app/search-result/search-result.component.html',
+    providers: [ResultService]
 })
 export class SearchResultComponent {
-    results = [
-        {
-            title: "test",
-            link: "http://google.com"
-        },
-        {
-            title: "test2",
-            link: "http://google.co.uk"
-        }
-    ]
+    constructor(private _resultService: ResultService) {
+    }
+    results = {};
+
+    ngOnInit(): void {
+        this._resultService.getResults()
+            .subscribe(x => this.results = x);
+    }
 }
