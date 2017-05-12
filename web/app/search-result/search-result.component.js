@@ -14,12 +14,15 @@ var result_service_1 = require("../services/result.service");
 var SearchResultComponent = (function () {
     function SearchResultComponent(_resultService) {
         this._resultService = _resultService;
-        this.results = {};
+        this.keyword = '';
     }
-    SearchResultComponent.prototype.ngOnInit = function () {
+    SearchResultComponent.prototype.searchClick = function () {
         var _this = this;
-        this._resultService.getResults()
-            .subscribe(function (x) { return _this.results = x; });
+        this._resultService.getResults(this.keyword)
+            .subscribe(function (x) {
+            alert('done');
+            _this.results = x;
+        });
     };
     return SearchResultComponent;
 }());

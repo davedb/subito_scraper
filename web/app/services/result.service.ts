@@ -9,7 +9,7 @@ export class ResultService {
 
     }
 
-    getResults() {
-        return this._http.get('http://dev-api.secondhandy.it/search?k=piaggio&items=3').map(r => r.json());
+    getResults(keyword:string) {
+        return this._http.get('http://dev-api.secondhandy.it/search?k=' + keyword + '&items=10').map(r => r.json());
     }
 }

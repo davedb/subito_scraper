@@ -16,8 +16,8 @@ var ResultService = (function () {
     function ResultService(_http) {
         this._http = _http;
     }
-    ResultService.prototype.getResults = function () {
-        return this._http.get('http://dev-api.secondhandy.it/search?k=piaggio&items=3').map(function (r) { return r.json(); });
+    ResultService.prototype.getResults = function (keyword) {
+        return this._http.get('http://dev-api.secondhandy.it/search?k=' + keyword + '&items=10').map(function (r) { return r.json(); });
     };
     return ResultService;
 }());

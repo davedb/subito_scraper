@@ -7,12 +7,19 @@ import { ResultService } from "../services/result.service";
     providers: [ResultService]
 })
 export class SearchResultComponent {
+    private keyword: string = '';
+
     constructor(private _resultService: ResultService) {
     }
-    results = {};
 
-    ngOnInit(): void {
-        this._resultService.getResults()
-            .subscribe(x => this.results = x);
+    results: any[];
+
+    searchClick(): void{
+         this._resultService.getResults(this.keyword)
+            .subscribe(x => 
+            {
+                alert('done');
+                this.results = x;
+            });
     }
 }
