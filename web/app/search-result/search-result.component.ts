@@ -11,14 +11,15 @@ export class SearchResultComponent {
 
     constructor(private _resultService: ResultService) {
     }
-
+    loading: boolean = false;
     results: any[];
 
     searchClick(): void{
+        this.loading = true;
          this._resultService.getResults(this.keyword)
             .subscribe(x => 
             {
-                alert('done');
+                this.loading = false;
                 this.results = x;
             });
     }

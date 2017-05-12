@@ -15,12 +15,14 @@ var SearchResultComponent = (function () {
     function SearchResultComponent(_resultService) {
         this._resultService = _resultService;
         this.keyword = '';
+        this.loading = false;
     }
     SearchResultComponent.prototype.searchClick = function () {
         var _this = this;
+        this.loading = true;
         this._resultService.getResults(this.keyword)
             .subscribe(function (x) {
-            alert('done');
+            _this.loading = false;
             _this.results = x;
         });
     };
