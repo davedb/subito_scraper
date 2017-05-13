@@ -93,3 +93,6 @@ ENV/
 
 #node_modules
 node_modules/
+
+web/app/**/*.js
+web/app/**/*.map
